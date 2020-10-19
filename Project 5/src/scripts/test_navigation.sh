@@ -6,4 +6,3 @@ xterm -e " roslaunch turtlebot_gazebo amcl_demo.launch map_file:=/home/workspace
 sleep 5
 xterm -e " roslaunch turtlebot_rviz_launchers view_navigation.launch " &
 sleep 5
-xterm -e " roslaunch pick_objects pick_objects.launch "
