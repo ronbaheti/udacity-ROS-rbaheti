@@ -70,8 +70,6 @@ int main( int argc, char** argv )
   // ros::Subscriber odom_sub = n.subscribe("/odom",10, callbackfunc);
   add_markers_sp add_markers;
   ros::spinOnce();
-  // Set our initial shape type to be a cube
-  
 
 
   return 0;
