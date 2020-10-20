@@ -1,6 +1,7 @@
 #include <ros/ros.h>
 #include <move_base_msgs/MoveBaseAction.h>
 #include <actionlib/client/simple_action_client.h>
+#include "add_markers/add_markers_srv.h"
 
 // Define a client for to send goal requests to the move_base server through a SimpleActionClient
 typedef actionlib::SimpleActionClient<move_base_msgs::MoveBaseAction> MoveBaseClient;
@@ -8,6 +9,9 @@ typedef actionlib::SimpleActionClient<move_base_msgs::MoveBaseAction> MoveBaseCl
 int main(int argc, char** argv){
   // Initialize the simple_navigation_goals node
   ros::init(argc, argv, "simple_navigation_goals");
+  ros::NodeHandle n;
+
+  ros::ServiceClient DisplayMarker = n.serviceClient<add_markers::add_markers_srv>("/add_markers/add_markers");
 
   //tell the action client that we want to spin a thread by default
   MoveBaseClient ac("move_base", true);
@@ -17,61 +21,75 @@ int main(int argc, char** argv){
     ROS_INFO("Waiting for the move_base action server to come up");
   }
 
-  move_base_msgs::MoveBaseGoal goal1;
+
+
+  move_base_msgs::MoveBaseGoal pickup;
+  move_base_msgs::MoveBaseGoal dropoff;
 
   // set up the frame parameters
-  goal1.target_pose.header.frame_id = "/goal1_zone";
-  goal1.target_pose.header.stamp = ros::Time::now();
+  pickup.target_pose.header.frame_id ="map";
+  pickup.target_pose.header.stamp = ros::Time::now();
+  dropoff.target_pose.header.frame_id ="map";
+  dropoff.target_pose.header.stamp = ros::Time::now();
 
   // Define a position and orientation for the robot to reach
-  goal1.target_pose.pose.position.x = 1.0;
-  goal1.target_pose.pose.position.y = 1.0;
-  goal.target_pose.pose.orientation.w = 1.0;
+  pickup.target_pose.pose.position.x = 2.5;
+  pickup.target_pose.pose.position.y = -1.5;
+  pickup.target_pose.pose.orientation.w = 1.0;
 
-   // Send the goal position and orientation for the robot to reach
+  // Putting marker on pickup location
+
+  add_markers::add_markers_srv marker;
+  marker.request.display = true;
+  marker.request.x = pickup.target_pose.pose.position.x;
+  marker.request.y = pickup.target_pose.pose.position.y;
+  DisplayMarker.call(marker);
+
+  // Send the goal position and orientation for the robot to reach
   ROS_INFO("Sending goal 1");
-  ac.sendGoal(goal1);
+  ac.sendGoal(pickup);
 
   // Wait an infinite time for the results
   ac.waitForResult();
 
   // Check if the robot reached its goal
   if(ac.getState() == actionlib::SimpleClientGoalState::SUCCEEDED)
-    ROS_INFO("Hooray, the base moved to goal 1");
+    ROS_INFO("Hooray, the rover reached goal 1");
+    marker.request.display = false;
+    DisplayMarker.call(marker);
   else
-    ROS_INFO("The base failed to move to goal 1 for some reason");
+    ROS_INFO("The rover failed to reach goal 1 for some reason");
 
   // Wait 5 sec for move_base action server to come up
-  if(ac.getState() == actionlib::SimpleClientGoalState::SUCCEEDED)
-    while(!ac.waitForServer(ros::Duration(5.0))){
-      ROS_INFO("Waiting for the robot to pick the object up");
-
-  move_base_msgs::MoveBaseGoal goal2;
-
-  // set up the frame parameters
-  goal2.target_pose.header.frame_id = "/goal2_zone";
-  //goal2.target_pose.header.stamp = ros::Time::now();
+  while(!ac.waitForServer(ros::Duration(5.0))){
+    ROS_INFO("Waiting for the rover to pick up the object");
+  }
 
   // Define a position and orientation for the robot to reach
-  goal2.target_pose.pose.position.x = 1.2;
-  goal2.target_pose.pose.position.y = -0.5;
-  goal2.target_pose.pose.orientation.w = 1.0;
+  dropoff.target_pose.pose.position.x = -5.0;
+  dropoff.target_pose.pose.position.y = 0.5;
+  dropoff.target_pose.pose.orientation.w = 1.0;
+
+  add_markers::add_markers_srv marker2;
+  marker2.request.display = true;
+  marker2.request.x = dropoff.target_pose.pose.position.x;
+  marker2.request.y = dropoff.target_pose.pose.position.y;
+  DisplayMarker.call(marker2);
 
    // Send the goal position and orientation for the robot to reach
   ROS_INFO("Sending goal 2");
-  ac.sendGoal(goal2);
+  ac.sendGoal(dropoff);
 
   // Wait an infinite time for the results
   ac.waitForResult();
 
   // Check if the robot reached its goal
   if(ac.getState() == actionlib::SimpleClientGoalState::SUCCEEDED)
-    ROS_INFO("Hooray, the base moved to goal 2");
+    ROS_INFO("Hooray, the rover reached goal 2");
+    marker.request.display = false;
+    DisplayMarker.call(marker2);
   else
-    ROS_INFO("The base failed to move to goal 2 for some reason");
-
-
-  }
+    ROS_INFO("The rover failed to reach goal 2 for some reason");
 
   return 0;
 }

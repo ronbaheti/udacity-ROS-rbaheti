@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.0.2)
-project(pick_objects)
+project(add_markers)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
 # add_compile_options(-std=c++11)
@@ -8,9 +8,10 @@ project(pick_objects)
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
-  actionlib
-  move_base_msgs
   roscpp
+  visualization_msgs
+  message_generation
+  std_msgs
 )
 
 ## System dependencies are found with CMake's conventions
@@ -54,11 +55,10 @@ find_package(catkin REQUIRED COMPONENTS
 # )
 
 ## Generate services in the 'srv' folder
-# add_service_files(
-#   FILES
-#   Service1.srv
-#   Service2.srv
-# )
+ add_service_files(
+   FILES
+   add_markers_srv.srv
+ )
 
 ## Generate actions in the 'action' folder
 # add_action_files(
@@ -68,10 +68,11 @@ find_package(catkin REQUIRED COMPONENTS
 # )
 
 ## Generate added messages and services with any dependencies listed here
-## generate_messages(
-##   DEPENDENCIES
-##   move_base_msgs
-## )
+ generate_messages(
+   DEPENDENCIES
+   visualization_msgs
+   std_msgs
+ )
 
 ################################################
 ## Declare ROS dynamic reconfigure parameters ##
@@ -104,8 +105,8 @@ find_package(catkin REQUIRED COMPONENTS
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
 #  INCLUDE_DIRS include
-#  LIBRARIES pick_objects
-#  CATKIN_DEPENDS actionlib move_base_msgs roscpp
+#  LIBRARIES add_markers
+#  CATKIN_DEPENDS roscpp visualization_msgs
 #  DEPENDS system_lib
 )
 
@@ -116,13 +117,13 @@ catkin_package(
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
 include_directories(
- include
+# include
   ${catkin_INCLUDE_DIRS}
 )
 
 ## Declare a C++ library
 # add_library(${PROJECT_NAME}
-#   src/${PROJECT_NAME}/pick_objects.cpp
+#   src/${PROJECT_NAME}/add_markers.cpp
 # )
 
 ## Add cmake target dependencies of the library
@@ -133,7 +134,7 @@ include_directories(
 ## Declare a C++ executable
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
-# add_executable(${PROJECT_NAME}_node src/pick_objects_node.cpp)
+# add_executable(${PROJECT_NAME}_node src/add_markers_node.cpp)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -197,7 +198,7 @@ include_directories(
 #############
 
 ## Add gtest based cpp test target and link libraries
-# catkin_add_gtest(${PROJECT_NAME}-test test/test_pick_objects.cpp)
+# catkin_add_gtest(${PROJECT_NAME}-test test/test_add_markers.cpp)
 # if(TARGET ${PROJECT_NAME}-test)
 #   target_link_libraries(${PROJECT_NAME}-test ${PROJECT_NAME})
 # endif()
@@ -205,8 +206,5 @@ include_directories(
 ## Add folders to be run by python nosetests
 # catkin_add_nosetests(test)
 
-include_directories(include ${catkin_INCLUDE_DIRS})
-
-add_executable(pick_obj src/pick_obj.cpp)
-target_link_libraries(pick_obj ${catkin_LIBRARIES})
-add_dependencies(pick_obj ${pick_objects_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+add_executable(add_markers src/add_markers.cpp)
+target_link_libraries(add_markers ${catkin_LIBRARIES})
