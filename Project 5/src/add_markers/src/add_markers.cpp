@@ -61,14 +61,14 @@ public:
      marker_pub = n.advertise<visualization_msgs::Marker>("visualization_marker", 10);
      marker_ser = n.advertiseService("/add_markers/add_marker", &add_markers_sp::callbackFunc, this);
   }
-}
+};
 
 int main( int argc, char** argv )
 {
 
   ros::init(argc, argv, "add_markers");
   // ros::Subscriber odom_sub = n.subscribe("/odom",10, callbackfunc);
-  add_marker_sp add_markers;
+  add_markers_sp add_markers;
   ros::spinOnce();
   // Set our initial shape type to be a cube
   
