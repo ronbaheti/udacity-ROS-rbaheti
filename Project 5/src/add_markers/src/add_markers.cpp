@@ -69,7 +69,7 @@ int main( int argc, char** argv )
   ros::init(argc, argv, "add_markers");
   // ros::Subscriber odom_sub = n.subscribe("/odom",10, callbackfunc);
   add_markers_sp add_markers;
-  ros::spinOnce();
+  ros::spin();
 
 
   return 0;
