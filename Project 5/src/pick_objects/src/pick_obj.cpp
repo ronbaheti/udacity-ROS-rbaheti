@@ -71,7 +71,7 @@ int main(int argc, char** argv){
   dropoff.target_pose.pose.orientation.w = 1.0;
 
   add_markers::add_markers_srv marker2;
-  marker2.request.display = true;
+  marker2.request.display = false;
   marker2.request.x = dropoff.target_pose.pose.position.x;
   marker2.request.y = dropoff.target_pose.pose.position.y;
   DisplayMarker.call(marker2);
@@ -86,7 +86,7 @@ int main(int argc, char** argv){
   // Check if the robot reached its goal
   if(ac.getState() == actionlib::SimpleClientGoalState::SUCCEEDED)
     ROS_INFO("Hooray, the rover reached goal 2");
-    marker.request.display = false;
+    marker2.request.display = true;
     DisplayMarker.call(marker2);
   else
     ROS_INFO("The rover failed to reach goal 2 for some reason");
