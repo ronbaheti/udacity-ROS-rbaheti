@@ -211,3 +211,7 @@ include_directories(include ${catkin_INCLUDE_DIRS})
 add_executable(pick_obj src/pick_obj.cpp)
 target_link_libraries(pick_obj ${catkin_LIBRARIES})
 add_dependencies(pick_obj ${pick_objects_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+
+add_executable(pick_obj2 src/pick_obj2.cpp)
+target_link_libraries(pick_obj2 ${catkin_LIBRARIES})
+add_dependencies(pick_obj2 ${pick_objects_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})

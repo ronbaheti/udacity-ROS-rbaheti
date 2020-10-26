@@ -7,4 +7,4 @@ xterm -e " roslaunch my_robot mapping.launch " &
 sleep 5
 xterm -e " roslaunch turtlebot_rviz_launchers view_navigation.launch " &
 sleep 5
-xterm -e " roslaunch my_robot teleop.launch " &
+xterm -e "source catkin_ws/devel/setup.bash;  roslaunch my_robot teleop.launch "

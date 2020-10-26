@@ -1,5 +1,6 @@
 bool display
 float64 x
 float64 y
+float64 w
 ---
 string msg_feedback

@@ -62,14 +62,11 @@ int main(int argc, char** argv){
     ROS_INFO("The rover failed to reach goal 1 for some reason");
   }
 
-  // Wait 5 sec for move_base action server to come up
-  while(!ac.waitForServer(ros::Duration(5.0))){
-    ROS_INFO("Waiting for the rover to pick up the object");
-  }
+  ros::Duration(5.0).sleep();
 
   // Define a position and orientation for the robot to reach
-  dropoff.target_pose.pose.position.x = -5.0;
-  dropoff.target_pose.pose.position.y = 0.5;
+  dropoff.target_pose.pose.position.x = 3.0;
+  dropoff.target_pose.pose.position.y = -2.0;
   dropoff.target_pose.pose.orientation.w = 1.0;
 
   add_markers::add_markers_srv marker2;

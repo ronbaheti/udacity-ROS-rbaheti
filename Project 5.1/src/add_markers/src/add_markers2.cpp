@@ -38,9 +38,9 @@ int main( int argc, char** argv )
     marker.pose.orientation.w = 1.0;
 
     // Set the scale of the marker -- 1x1x1 here means 1m on a side
-    marker.scale.x = 1.0;
-    marker.scale.y = 1.0;
-    marker.scale.z = 1.0;
+    marker.scale.x = 0.5;
+    marker.scale.y = 0.5;
+    marker.scale.z = 0.5;
  
     // Set the color -- be sure to set alpha to something non-zero!
     marker.color.r = 0.0f;
@@ -51,9 +51,8 @@ int main( int argc, char** argv )
     marker.lifetime = ros::Duration(5);
 
     marker_pub.publish(marker);
-    marker.action = visualization_msgs::Marker::DELETE;
 
-    ros::Duration(5);
+    ros::Duration(5).sleep();
 
     visualization_msgs::Marker marker2;
     // Set the frame ID and timestamp.  See the TF tutorials for information on these.
@@ -72,8 +71,8 @@ int main( int argc, char** argv )
     marker2.action = visualization_msgs::Marker::ADD;
 
     // Set the pose of the marker.  This is a full 6DOF pose relative to the frame/time specified in the header
-    marker2.pose.position.x = -5.0;
-    marker2.pose.position.y = 0.5;
+    marker2.pose.position.x = 3.0;
+    marker2.pose.position.y = -2.0;
     marker2.pose.position.z = 0;
     marker2.pose.orientation.x = 0.0;
     marker2.pose.orientation.y = 0.0;
@@ -81,9 +80,9 @@ int main( int argc, char** argv )
     marker2.pose.orientation.w = 1.0;
 
     // Set the scale of the marker -- 1x1x1 here means 1m on a side
-    marker2.scale.x = 1.0;
-    marker2.scale.y = 1.0;
-    marker2.scale.z = 1.0;
+    marker2.scale.x = 0.5;
+    marker2.scale.y = 0.5;
+    marker2.scale.z = 0.5;
  
     // Set the color -- be sure to set alpha to something non-zero!
     marker2.color.r = 0.0f;
